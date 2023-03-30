@@ -53,15 +53,15 @@
 %%
 %% @end
 %%--------------------------------------------------------------------
-start_link(Supervisor_name,Registration_type,Start_info)->
-    supervisor:start_link({Registration_type,Supervisor_name},?MODULE,Start_info).
+start_link(Registration_type, Supervisor_name, Start_info)->
+    supervisor:start_link({Registration_type,Supervisor_name},?MODULE, Start_info).
 
 
 %%%===================================================================
 %%% Mandatory callback functions
 %%%===================================================================
 
-init(_Start_info) ->
+init(Start_info) ->
 
 %% A supervisor specification is a record with the following mappings.
 %%
