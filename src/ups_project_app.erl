@@ -11,7 +11,7 @@
 start(_Type, _Args) ->
 	Dispatch = cowboy_router:compile([
 	    {'_', [
-		{"/store_package_info",store_package_h,[]}
+		{"/store_package_info", store_package_h,[]}
         % {"/query_package_history",query_history_h,[]}
 	    ]}
 	]),
@@ -22,7 +22,7 @@ start(_Type, _Args) ->
 				{certfile, PrivDir ++ "/ssl/fullchain.pem"},
 				{keyfile, PrivDir ++ "/ssl/privkey.pem"}
               		], #{env => #{dispatch => Dispatch}}),
-	db_access_sup:start_link().
+	ups_project_sup:start_link().
 stop(_State) ->
     ok.
 
