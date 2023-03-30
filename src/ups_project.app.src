@@ -5,7 +5,8 @@
   {mod, {ups_project_app, []}},
   {applications,
    [kernel,
-    stdlib
+    stdlib,
+    cowboy
    ]},
   {env,[]},
   {modules, []},
