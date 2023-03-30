@@ -25,7 +25,7 @@
 %% 
 -export([init/1]).
 %% event Callbacks
--export([start/1,start/3]).
+-export([start_link/3]).
 
 %%%===================================================================
 %%% Public API functions
@@ -40,8 +40,8 @@
 %%
 %% @end
 %%--------------------------------------------------------------------
-start(Start_info)->
-    supervisor:start_link({local,?MODULE},?MODULE,Start_info).
+% start(Start_info)->
+%     supervisor:start_link({local,?MODULE},?MODULE,Start_info).
 
 %%--------------------------------------------------------------------
 %% @doc
@@ -53,7 +53,7 @@ start(Start_info)->
 %%
 %% @end
 %%--------------------------------------------------------------------
-start(Supervisor_name,Registration_type,Start_info)->
+start_link(Supervisor_name,Registration_type,Start_info)->
     supervisor:start_link({Registration_type,Supervisor_name},?MODULE,Start_info).
 
 
