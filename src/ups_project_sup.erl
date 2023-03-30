@@ -33,7 +33,7 @@ init([]) ->
     {ok, {SupFlags, ChildSpecs}},
 
 
-    ChildSpecList = [child(request_sup,supervisor)],
+    ChildSpecList = [],
     {ok, {SupFlags, ChildSpecList}}.
 
 %% internal functions
