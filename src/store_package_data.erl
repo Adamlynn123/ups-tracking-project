@@ -21,7 +21,7 @@
 %%%===================================================================
 
 store(ServerRef, Key, Value) -> 
-    gen_server:call(ServerRef, {store, Key, Value}).
+    gen_server:call(ServerRef, {store, Key, Value}, infinite).
 
 %%--------------------------------------------------------------------
 %% @doc
