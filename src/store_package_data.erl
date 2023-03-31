@@ -9,7 +9,7 @@
 -endif.
 
 %% API
--export([start_link/3,stop/0]).
+-export([start_link/3,stop/0, store/3]).
 
 %% gen_server callbacks
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2,
