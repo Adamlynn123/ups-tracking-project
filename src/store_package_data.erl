@@ -9,7 +9,7 @@
 -endif.
 
 %% API
--export([start/0,start_link/3,stop/0]).
+-export([start_link/3,stop/0]).
 
 %% gen_server callbacks
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2,
@@ -23,17 +23,7 @@
 store(ServerRef, Key, Value) -> 
     gen_server:call(ServerRef, {store, Key, Value}, infinite).
 
-%%--------------------------------------------------------------------
-%% @doc
-%% Starts the server assuming there is only one server started for 
-%% this module. The server is registered locally with the registered
-%% name being the name of the module.
-%%
-%% @end
-%%--------------------------------------------------------------------
--spec start() -> {ok, pid()} | ignore | {error, term()}.
-start() ->
-    gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
+
 %%--------------------------------------------------------------------
 %% @doc
 %% Starts a server using this module and registers the server using
