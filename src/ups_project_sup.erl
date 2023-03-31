@@ -29,8 +29,6 @@ init([]) ->
     SupFlags = #{strategy => rest_for_one,
                  intensity => 0,
                  period => 1},
-    ChildSpecs = [],
-    {ok, {SupFlags, ChildSpecs}},
 
     Sp_Sup = generate_spec(store_package_data_sup, supervisor, store_package_data_sup, []),
 

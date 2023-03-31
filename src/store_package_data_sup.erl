@@ -61,7 +61,7 @@ start_link(Registration_type, Supervisor_name, Start_info)->
 %%% Mandatory callback functions
 %%%===================================================================
 
-init(Start_info) ->
+init(_Start_info) ->
 
 %% A supervisor specification is a record with the following mappings.
 %%
@@ -84,7 +84,7 @@ init(Start_info) ->
     Num_servers = 100,
 
     Server_names =
-        [list_to_atom("Store_package_data_" ++ integer_to_list(X)) || X <- lists:seq(0, (Num_servers - 1))],
+        [list_to_atom("store_package_data_" ++ integer_to_list(X)) || X <- lists:seq(0, (Num_servers - 1))],
 
     Children = [generate_spec(store_package_data, worker, Name, []) || Name <- Server_names],
 
