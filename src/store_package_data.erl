@@ -64,7 +64,7 @@ stop() -> gen_server:call(?MODULE, stop).
 %%--------------------------------------------------------------------
 -spec init(term()) -> {ok, term()}|{ok, term(), number()}|ignore |{stop, term()}.
 init(_Args) ->
-        case riakc_pb_socket:start_link("146.190.152.201")  of
+        case riakc_pb_socket:start_link("146.190.152.201", 8087)  of
             {ok, Riak_pid} -> 
                 {ok, Riak_pid};
             _ -> 
