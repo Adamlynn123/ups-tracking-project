@@ -65,7 +65,7 @@ generate_spec(Module,Type, Name, State)->
 %%                                                  % such a list is unknown, for example when the child is a 
 %%                                                  % gen_event manager with some unknown types of gen_event handler
 %%                                                  % modules to be added later.  
-        #{id => Module,
+        #{id => Name,
             start => {Module,start_link,[local, Name, State]},
             restart => permanent,
             shutdown => 2000,
