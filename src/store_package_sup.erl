@@ -14,7 +14,7 @@
 
 %%% Created : 24 October 2022 by Lee Barney <barney.cit@gmail.com>
 %%%-------------------------------------------------------------------
--module(store_package_data_sup).
+-module(store_package_sup).
 -behaviour(supervisor).
 
 %%%===================================================================

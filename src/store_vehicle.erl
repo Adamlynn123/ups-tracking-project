@@ -1,4 +1,4 @@
--module(store_package_data).
+-module(store_vehicle).
 -behaviour(gen_server).
 
 %% Only include the eunit testing library
@@ -9,7 +9,7 @@
 -endif.
 
 %% API
--export([start_link/3,stop/0, store/3]).
+-export([start/0,start/3,stop/0]).
 
 %% gen_server callbacks
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2,
@@ -20,10 +20,17 @@
 %%% API
 %%%===================================================================
 
-store(ServerRef, Key, Value) -> 
-    gen_server:call(ServerRef, {store, Key, Value}, infinite).
-
-
+%%--------------------------------------------------------------------
+%% @doc
+%% Starts the server assuming there is only one server started for 
+%% this module. The server is registered locally with the registered
+%% name being the name of the module.
+%%
+%% @end
+%%--------------------------------------------------------------------
+-spec start() -> {ok, pid()} | ignore | {error, term()}.
+start() ->
+    gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
 %%--------------------------------------------------------------------
 %% @doc
 %% Starts a server using this module and registers the server using
@@ -35,8 +42,8 @@ store(ServerRef, Key, Value) ->
 %%
 %% @end
 %%--------------------------------------------------------------------
--spec start_link(atom(),atom(),atom()) -> {ok, pid()} | ignore | {error, term()}.
-start_link(Registration_type,Name,Args) ->
+-spec start(atom(),atom(),atom()) -> {ok, pid()} | ignore | {error, term()}.
+start(Registration_type,Name,Args) ->
     gen_server:start_link({Registration_type, Name}, ?MODULE, Args, []).
 
 
@@ -63,13 +70,8 @@ stop() -> gen_server:call(?MODULE, stop).
 %% @end
 %%--------------------------------------------------------------------
 -spec init(term()) -> {ok, term()}|{ok, term(), number()}|ignore |{stop, term()}.
-init(_Args) ->
-        case riakc_pb_socket:start_link("146.190.152.201", 8087)  of
-            {ok, Riak_pid} -> 
-                {ok, Riak_pid};
-            _ -> 
-                {stop, link_failure}
-        end.
+init([]) ->
+        {ok,replace_up}.
 %%--------------------------------------------------------------------
 %% @private
 %% @doc
@@ -84,9 +86,9 @@ init(_Args) ->
                                   {noreply, term(), integer()} |
                                   {stop, term(), term(), integer()} | 
                                   {stop, term(), term()}.
-handle_call({store, Package_id, Value}, _From, Riak_pid) ->
+handle_call({store, Vehicle_id, Value}, _From, Riak_pid) ->
     
-    Request = riakc_obj:new(<<"Package">>, Package_id, Value),
+    Request = riakc_obj:new(<<"Vehicle">>, Vehicle_id, Value),
 
     {reply, riakc_pb_socket:put(Riak_pid, Request), Riak_pid};
     
@@ -167,15 +169,15 @@ teardown(Pid) ->
 
 put_error() ->
     meck:expect(riakc_pb_socket, put, fun(_, _) -> {failed, "Put error"} end),
-    ?_assertEqual(store_package_data:handle_call({store, "package_id", {[{"holder_id", "time_stamp"}]}}, some_from_pid, some_riak_pid), {reply, {stop, "gen_server stopped"}, some_riak_pid}).
+    ?_assertEqual(store_package_data:handle_call({store, "vehicle_id", {[{"holder_id", "time_stamp"}]}}, some_from_pid, some_riak_pid), {reply, {stop, "gen_server stopped"}, some_riak_pid}).
 
 instantiator(Pid) ->
-    [?_assertEqual(store_package_data:handle_call({store, "package_id", {[{"holder_id", "time_stamp"}]}}, some_from_pid, some_riak_pid), {reply, ok, some_riak_pid}),
+    [?_assertEqual(store_package_data:handle_call({store, "vehicle_id", {[{"holder_id", "time_stamp"}]}}, some_from_pid, some_riak_pid), {reply, ok, some_riak_pid}),
      ?_assertEqual(store_package_data:handle_call({store, "", {[{"holder_id", "time_stamp"}]}}, some_from_pid, some_riak_pid), {reply, {failed, "Empty key"}, some_riak_pid}),
-     ?_assertEqual(store_package_data:handle_call({store, "package_id", {[{}]}}, some_from_pid, some_riak_pid), {reply, {failed, "Wrong value"}, some_riak_pid}),
+     ?_assertEqual(store_package_data:handle_call({store, "vehicle_id", {[{}]}}, some_from_pid, some_riak_pid), {reply, {failed, "Wrong value"}, some_riak_pid}),
      put_error()
     ].
 
-store_package_data_test_() -> {setup, fun setup/0, fun teardown/1, fun instantiator/1}.
+store_vehicle_data_test_() -> {setup, fun setup/0, fun teardown/1, fun instantiator/1}.
 
 -endif.
